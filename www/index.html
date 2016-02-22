@@ -27,6 +27,7 @@
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
         <title>Hello World</title>
     </head>
     <body>
@@ -58,6 +59,96 @@
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
             app.initialize();
+            alert("ciao");
+            var currOp="";
+  var oldNum;
+  var num;
+  var opPressed = false, numPressed=true, err = false;
+  
+  var calculate = function(n1, op, n2) {
+    switch(op) {
+      case "+":
+        return Number(n1) + Number(n2);
+      case "-":
+        return Number(n1) - Number(n2);
+      case "X":
+        return Number(n1) * Number(n2);
+      case "/":
+        return Number(n1) / Number(n2);
+      case "%":
+        return Number(n1) % Number(n2);
+    };
+  };
+  alert("ciao");
+  $(".num-btn").click(function() {
+    if($(".screen").text().indexOf(".")!==-1 && $(this).text() === ".")
+      return -1;
+    if(opPressed === true || $(".screen").text()==="0") {
+      $(".screen").text("");
+      opPressed="false";
+    }
+    if($(".screen").text().length > 10)
+      return -2;
+    numPressed = true;
+    $(".screen").append($(this).text());
+  });
+  
+  $(".op-btn").click(function() {
+    if(currOp !== "" && numPressed) {
+      num = ""+calculate(oldNum,currOp,$(".screen").text());
+      if(Number(num)<=99999999999) {
+        num = Number(num.substring(0,11));
+        num = parseFloat(num.toFixed(11));
+      
+        $(".screen").text(num);
+      }
+      else {
+        $(".screen").text("ERR! BIG NR");
+        currOp = "";
+        opPressed = false;
+        $(".screen").text("0");
+        alert("Whoops! Result was too big! Calculator will reset");
+      }
+    }
+    oldNum = $(".screen").text();
+    currOp = $(this).text();
+    opPressed = true;
+    numPressed = false;
+  });
+  
+  $("#ce").click(function() {
+    $(".screen").text("0");
+  });
+  
+  $("#ac").click(function() {
+    currOp = "";
+    opPressed = false;
+    $(".screen").text("0");
+  });
+  
+  $("#ans").click(function() {
+    if(currOp !== "" && numPressed) {
+      num = ""+calculate(oldNum,currOp,$(".screen").text());
+      if(Number(num)<=99999999999) {
+        num = Number(num.substring(0,11));
+        num = parseFloat(num.toFixed(11));
+        $(".screen").text(num);
+      }
+      else {
+        $(".screen").text("ERR! BIG NR");
+        currOp = "";
+        opPressed = false;
+        $(".screen").text("0");
+        alert("Whoops! Result was too big! Calculator will reset");
+      }
+    }
+    oldNum = $(".screen").text();
+    currOp="";
+    opPressed=true;
+    numPressed = false;
+  });
+  
+  
         </script>
     </body>
 </html>
